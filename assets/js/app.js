@@ -16,6 +16,11 @@ const SITE = {
 const PAGE_SIZE = 9;
 const APP_BASE = getAppBase();
 
+// ─── Caching ─────────────────────────────────
+const mdCache = new Map();
+const contentCache = {};
+let contentLoading = {};
+
 function getAppBase() {
   if (window.location.protocol === 'file:') return '';
   const scriptPath = document.currentScript?.src ? new URL(document.currentScript.src).pathname : '';
@@ -214,7 +219,7 @@ function homePage() {
           </div>
           <a href="/projects" class="btn-ghost text-sm hidden sm:flex">View All <i class="fa-solid fa-arrow-right text-xs"></i></a>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">${renderProjectCards(PROJECTS.slice(0, 3))}</div>
+        <div id="homeProjectGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">${renderProjectCards(PROJECTS.slice(0, 3))}</div>
         <div class="text-center mt-8 sm:hidden"><a href="/projects" class="btn-ghost text-sm">View All Projects</a></div>
       </div>
     </section>
@@ -228,7 +233,7 @@ function homePage() {
           </div>
           <a href="/blog" class="btn-ghost text-sm hidden sm:flex">View All <i class="fa-solid fa-arrow-right text-xs"></i></a>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">${renderBlogCards(BLOG_POSTS.slice(0, 3))}</div>
+        <div id="homeBlogGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">${renderBlogCards(BLOG_POSTS.slice(0, 3))}</div>
         <div class="text-center mt-8 sm:hidden"><a href="/blog" class="btn-ghost text-sm">View All Research</a></div>
       </div>
     </section>
@@ -487,7 +492,17 @@ function notFoundPage() {
 // CONTENT INDEX (Blog + Projects)
 // =============================================
 
-const BLOG_POSTS = [
+const BLOG_SLUGS = [
+  'sample-blog', 'api-attack-surfaces', 'firmware-reversing',
+  'exploit-chains', 'cloud-attack-paths', 'red-team-methodology'
+];
+
+const PROJECT_SLUGS = [
+  'sample-project', 'redlens', 'firmforge', 'cloudbreak', 'fuzzcore',
+  'sigmavault', 'bytesift', 'authstorm', 'threatgraph', 'packetproxy'
+];
+
+let BLOG_POSTS = [
   { slug: 'sample-blog', title: 'The Art of Manual Penetration Testing', date: '2026-06-15', tags: ['Penetration Testing','Methodology'], excerpt: 'Why automated scanners miss critical vulnerabilities and how manual testing reveals what tools can\'t find.' },
   { slug: 'api-attack-surfaces', title: 'Modern API Attack Surfaces', date: '2026-05-28', tags: ['API Security','Cloud'], excerpt: 'Mapping the growing attack surface of REST, GraphQL, and gRPC APIs in modern cloud-native applications.' },
   { slug: 'firmware-reversing', title: 'Firmware Reversing for Pentesters', date: '2026-04-10', tags: ['IoT','Firmware','Reverse Engineering'], excerpt: 'A practical guide to extracting, analyzing, and exploiting vulnerabilities in embedded device firmware.' },
@@ -496,7 +511,7 @@ const BLOG_POSTS = [
   { slug: 'red-team-methodology', title: 'Red Team Engagement Methodology', date: '2026-01-22', tags: ['Red Team','Methodology'], excerpt: 'How we plan and execute red team operations, from initial recon to final report delivery.' }
 ];
 
-const PROJECTS = [
+let PROJECTS = [
   { slug: 'sample-project', title: 'Vantage — Attack Surface Monitor', date: '2026-06-20', status: 'Open Source', tags: ['Recon','Python','Automation'], excerpt: 'Continuous external attack-surface discovery and change monitoring across an organization\'s entire internet-facing footprint.' },
   { slug: 'redlens', title: 'RedLens — Adversary Emulation', date: '2026-06-02', status: 'Internal', tags: ['Red Team','C2','Go'], excerpt: 'A modular adversary-emulation platform for running repeatable, MITRE ATT&CK-mapped red team campaigns.' },
   { slug: 'firmforge', title: 'FirmForge — Firmware Pipeline', date: '2026-05-14', status: 'Open Source', tags: ['IoT','Firmware','Python'], excerpt: 'An automated pipeline that unpacks, analyzes, and diffs firmware images to surface secrets and vulnerable binaries.' },
@@ -508,6 +523,107 @@ const PROJECTS = [
   { slug: 'threatgraph', title: 'ThreatGraph — Recon Correlation', date: '2026-01-20', status: 'Active', tags: ['OSINT','Graph','Python'], excerpt: 'Correlates OSINT, DNS, and certificate data into a queryable graph for large-scale reconnaissance.' },
   { slug: 'packetproxy', title: 'PacketProxy — Protocol Interception', date: '2026-01-06', status: 'Open Source', tags: ['Network','Go','Tooling'], excerpt: 'An extensible intercepting proxy for arbitrary binary protocols, with a plugin API for custom codecs.' }
 ];
+
+// ─── Dynamic Content Loading from Markdown ────
+function parseTag(tag) {
+  return tag.trim().replace(/-/g, ' ');
+}
+
+function parseTagArray(tags) {
+  return (tags || '').split(',').map(parseTag).filter(Boolean);
+}
+
+function parseFrontMatterFm(md) {
+  const fm = {};
+  if (md.startsWith('---')) {
+    const end = md.indexOf('---', 3);
+    if (end > 0) {
+      md.substring(3, end).trim().split('\n').forEach(l => {
+        const i = l.indexOf(':');
+        if (i > 0) {
+          const k = l.substring(0, i).trim();
+          const v = l.substring(i + 1).trim().replace(/^["']|["']$/g, '');
+          fm[k] = v;
+        }
+      });
+    }
+  }
+  return fm;
+}
+
+function normalizeContentItem(slug, fm) {
+  return {
+    slug,
+    title: fm.title || slug,
+    date: fm.date || '',
+    tags: parseTagArray(fm.tags),
+    excerpt: fm.excerpt || '',
+    status: fm.status || '',
+    stack: fm.stack || '',
+    link: fm.link || '',
+    role: fm.role || ''
+  };
+}
+
+async function loadContentIndex(type) {
+  const key = type === '/projects' ? 'projects' : 'blogs';
+  if (contentCache[key]) return contentCache[key];
+  if (contentLoading[key]) return contentLoading[key];
+
+  const slugs = type === '/projects' ? PROJECT_SLUGS : BLOG_SLUGS;
+  const fetchAll = slugs.map(async slug => {
+    if (mdCache.has(slug)) {
+      const fm = parseFrontMatterFm(mdCache.get(slug));
+      return normalizeContentItem(slug, fm);
+    }
+    try {
+      const res = await fetch(withBase(`/${key}/${slug}.md`));
+      if (!res.ok) return null;
+      const md = await res.text();
+      mdCache.set(slug, md);
+      const fm = parseFrontMatterFm(md);
+      return normalizeContentItem(slug, fm);
+    } catch (e) {
+      return null;
+    }
+  });
+
+  const loading = (async () => {
+    const results = await Promise.allSettled(fetchAll);
+    const items = results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
+    items.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+    contentCache[key] = items;
+    return items;
+  })();
+
+  contentLoading[key] = loading;
+  const items = await loading;
+  delete contentLoading[key];
+  return items;
+}
+
+async function refreshContentCache() {
+  try {
+    const [blogItems, projectItems] = await Promise.all([
+      loadContentIndex('/blog'),
+      loadContentIndex('/projects')
+    ]);
+    if (blogItems && blogItems.length) BLOG_POSTS = blogItems;
+    if (projectItems && projectItems.length) PROJECTS = projectItems;
+    updateHomeCards();
+    hydrateListings();
+  } catch (e) {
+    // use hardcoded fallback
+  }
+}
+
+function updateHomeCards() {
+  const blogGrid = document.getElementById('homeBlogGrid');
+  const projectGrid = document.getElementById('homeProjectGrid');
+  if (blogGrid) blogGrid.innerHTML = renderBlogCards(BLOG_POSTS.slice(0, 3));
+  if (projectGrid) projectGrid.innerHTML = renderProjectCards(PROJECTS.slice(0, 3));
+  if (blogGrid || projectGrid) normalizeInternalLinks(document.getElementById('app'));
+}
 
 // ─── Card renderers (image-less, modern) ─────
 function contentCard(base, p, primaryLabel) {
@@ -921,9 +1037,13 @@ async function renderMarkdownPost(slug, kind) {
   app.innerHTML = `<div class="max-w-4xl mx-auto px-5 sm:px-8 py-32 text-center text-white/20"><i class="fa-solid fa-spinner fa-spin text-2xl"></i></div>`;
 
   try {
-    const res = await fetch(withBase(`/${dir}/${slug}.md`));
-    if (!res.ok) throw new Error('not found');
-    const md = await res.text();
+    let md = mdCache.get(slug);
+    if (!md) {
+      const res = await fetch(withBase(`/${dir}/${slug}.md`));
+      if (!res.ok) throw new Error('not found');
+      md = await res.text();
+      mdCache.set(slug, md);
+    }
 
     const fm = parseFrontMatter(md);
     const body = stripFrontMatter(md);
@@ -1031,6 +1151,30 @@ function setupForm() {
   });
 }
 
+// ─── Service Worker ──────────────────────────
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    try {
+      const swPath = withBase('/sw.js');
+      navigator.serviceWorker.register(swPath).catch(() => {});
+    } catch (e) {}
+  }
+}
+
+// ─── Preloading ──────────────────────────────
+function startPreload() {
+  setTimeout(() => {
+    try {
+      const links = document.createElement('link');
+      links.rel = 'prefetch';
+      links.as = 'fetch';
+      links.href = withBase('/blogs/sample-blog.md');
+      document.head.appendChild(links);
+    } catch (e) {}
+    refreshContentCache();
+  }, 500);
+}
+
 // ─── Initialization ──────────────────────────
 function init() {
   setupNavigation();
@@ -1039,6 +1183,8 @@ function init() {
   setupPager();
   routePage();
   normalizeInternalLinks();
+  registerSW();
+  startPreload();
 
   try {
     configureMarked();
