@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://blackvectr.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://blackvectr.com/about</loc><priority>0.8</priority></url>
+  <url><loc>https://blackvectr.com/services</loc><priority>0.9</priority></url>
+  <url><loc>https://blackvectr.com/projects</loc><priority>0.8</priority></url>
+  <url><loc>https://blackvectr.com/blog</loc><priority>0.7</priority></url>
+  <url><loc>https://blackvectr.com/contact</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/sample-project</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/redlens</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/firmforge</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/cloudbreak</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/fuzzcore</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/sigmavault</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/bytesift</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/authstorm</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/threatgraph</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/projects/packetproxy</loc><priority>0.6</priority></url>
+</urlset>
