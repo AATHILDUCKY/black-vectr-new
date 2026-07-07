@@ -6,9 +6,9 @@
 // ─── Configuration ───────────────────────────
 const SITE = {
   name: 'BLACK VECTR',
-  tagline: 'Research-Driven Offensive Security',
+  tagline: 'Research-Led Security Assessment',
   url: 'https://blackvectr.com',
-  email: 'contact@blackvectr.com',
+  email: 'blackvectr@gmail.com',
   year: new Date().getFullYear(),
   assets: 'assets'
 };
@@ -45,12 +45,12 @@ function withBase(path) {
 
 // ─── Routes ──────────────────────────────────
 const ROUTES = {
-  '/':         { render: homePage,     title: 'BLACK VECTR — Security Solutions, Research, and Red Teaming',        desc: 'BLACK VECTR builds security solutions across offensive red teaming, penetration testing, security research, tooling, awareness, and incident-focused services.' },
-  '/about':    { render: aboutPage,    title: 'About — BLACK VECTR | Research-Led Security Partner',      desc: 'Built by researchers. Growing into a broader security solutions company spanning red teaming, tooling, awareness, and incident-focused capabilities.' },
-  '/services': { render: servicesPage, title: 'Services — BLACK VECTR | Red Teaming, Research, and Security Solutions',   desc: 'Offensive red teaming, penetration testing, tooling, security awareness, digital forensics, asset recovery support, and custom security solutions.' },
-  '/projects': { render: projectsPage, title: 'Projects — BLACK VECTR | Security Tools & Engineering',    desc: 'Open-source tools, internal platforms, and security engineering projects built by the BLACK VECTR team.' },
-  '/blog':     { render: blogPage,     title: 'Research — BLACK VECTR | Security Research & Insights',     desc: 'Technical deep-dives, vulnerability research, and practical security guides from the BLACK VECTR team.' },
-  '/contact':  { render: contactPage,  title: 'Contact — BLACK VECTR | Get in Touch',                     desc: 'Reach out for penetration testing, security research, and offensive security services. We respond within 24 hours.' }
+  '/':         { render: homePage,     title: 'BLACK VECTR — Security Assessments, Research, and Training',        desc: 'BLACK VECTR provides research-led security assessments across web apps, APIs, cloud, external attack surface, awareness, OSINT, forensics support, and vulnerability research.' },
+  '/about':    { render: aboutPage,    title: 'About — BLACK VECTR | Research-Led Security Practice',      desc: 'An independent security research practice focused on practical assessment, responsible learning, tooling, and clear security communication.' },
+  '/services': { render: servicesPage, title: 'Services — BLACK VECTR | Security Testing, Awareness, and Response Support',   desc: 'Web application testing, API security testing, cloud assessment, external attack surface review, OSINT, phishing simulation, secure code review, incident support, and more.' },
+  '/projects': { render: projectsPage, title: 'Projects — BLACK VECTR | Security Tools & Research',    desc: 'Open-source experiments, technical notes, and security engineering projects from BLACK VECTR.' },
+  '/blog':     { render: blogPage,     title: 'Research — BLACK VECTR | Security Research & Insights',     desc: 'Technical deep-dives, vulnerability research notes, and practical security guides from BLACK VECTR.' },
+  '/contact':  { render: contactPage,  title: 'Contact — BLACK VECTR | Plan a Security Assessment',                     desc: 'Reach out for security testing, research collaboration, awareness training, incident support, or a focused assessment plan.' }
 };
 
 // ─── Core Functions ──────────────────────────
@@ -166,14 +166,14 @@ function homePage() {
               ${SITE.tagline}
             </span>
           </div>
-          <h1 class="hero-title mt-7 mb-6 fade-in delay-1">Professional offensive security for modern organizations.</h1>
-          <p class="hero-lead text-base sm:text-lg leading-relaxed fade-in delay-2">Red teaming, penetration testing, research, and tailored security solutions.</p>
+          <h1 class="hero-title mt-7 mb-6 fade-in delay-1">Practical security testing backed by continuous research.</h1>
+          <p class="hero-lead text-base sm:text-lg leading-relaxed fade-in delay-2">Web, API, cloud, OSINT, awareness, and incident-focused assessments for teams that want clear evidence, useful reporting, and honest security direction.</p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center mt-9 fade-in delay-3">
             <a href="/services" class="btn-primary"><i class="fa-solid fa-arrow-right"></i> View Services</a>
-            <a href="/contact" class="btn-ghost"><i class="fa-regular fa-envelope"></i> Contact Our Team</a>
+            <a href="/contact" class="btn-ghost"><i class="fa-regular fa-envelope"></i> Start a Conversation</a>
           </div>
           <div class="hero-metrics grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto mt-14 pt-8 border-t border-white/10 fade-in delay-4">
-            ${[['Red Teaming','Offensive'],['Security Research','Technical'],['Custom Solutions','Services']].map(([n,l]) => `
+            ${[['Assessment','Security Testing'],['Research','Papers & Repos'],['Training','Human Layer']].map(([n,l]) => `
               <div class="hero-metric">
                 <div class="stat-num text-2xl sm:text-3xl">${n}</div>
                 <div class="text-[11px] text-white/50 mt-1 font-mono uppercase tracking-[0.18em]">${l}</div>
@@ -188,18 +188,18 @@ function homePage() {
       <div class="max-w-6xl mx-auto px-5 sm:px-8">
         <div class="text-center max-w-2xl mx-auto mb-16" data-observe>
           <span class="code-label">// Core Capabilities</span>
-          <h2 class="h-sec text-3xl sm:text-4xl mt-4 mb-4">More Than Testing. Built for Real Security Outcomes.</h2>
+          <h2 class="h-sec text-3xl sm:text-4xl mt-4 mb-4">Focused assessments. Clear findings. Better security decisions.</h2>
           <div class="section-line"></div>
-          <p class="text-white/55 mt-5 text-sm sm:text-base leading-relaxed">We combine offensive operations, research, tool development, awareness, and incident-oriented support so clients can strengthen security from multiple angles, not just one engagement type.</p>
+          <p class="text-white/55 mt-5 text-sm sm:text-base leading-relaxed">BLACK VECTR combines hands-on testing, security research, practical education, and investigation support. The goal is simple: identify what matters, explain it clearly, and help you decide what to fix first.</p>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           ${[
-            ['fa-crosshairs', 'Offensive Red Teaming', 'Adversary-style engagements that pressure-test people, process, detection, and response against realistic attack paths.'],
-            ['fa-bug', 'Penetration Testing', 'Manual testing across web, API, mobile, cloud, wireless, and internal environments with chained exploit thinking.'],
-            ['fa-terminal', 'Security Tooling & Solutions', 'Custom internal tools, automation flows, and engineering support built around your real operational needs.'],
-            ['fa-flask', 'Research & Exploit Development', 'Deep technical research, proof-of-concept development, reverse engineering, and novel attack analysis.'],
-            ['fa-user-shield', 'Security Awareness', 'Practical awareness programs and adversary-informed education to strengthen human-layer defense.'],
-            ['fa-magnifying-glass-location', 'Forensics & Recovery Support', 'Incident-oriented investigation support, evidence preservation, recovery planning, and asset-focused triage as capabilities expand.']
+            ['fa-globe', 'Web & API Security', 'Manual assessment of web applications, APIs, authentication flows, access control, business logic, and exposed endpoints.'],
+            ['fa-cloud', 'Cloud & Attack Surface', 'External attack surface review, cloud configuration assessment, DNS security review, and internet exposure analysis.'],
+            ['fa-code', 'Secure Code Review', 'Source-level review focused on exploitable patterns, privilege boundaries, data handling, and remediation guidance.'],
+            ['fa-magnifying-glass-chart', 'OSINT & Exposure Research', 'Open-source intelligence, data exposure checks, dark web exposure monitoring, and public footprint analysis.'],
+            ['fa-user-shield', 'Awareness & Social Engineering', 'Phishing simulation, security awareness training, executive briefings, and social engineering assessment.'],
+            ['fa-file-shield', 'Forensics & Incident Support', 'Log analysis, breach investigation support, digital forensics triage, and incident response guidance.']
           ].map(([icon, title, desc]) => `
             <div class="card-hover p-6 sm:p-7">
               <div class="w-10 h-10 rounded-lg border border-white/8 flex items-center justify-center text-red mb-4"><i class="fa-solid ${icon}"></i></div>
@@ -241,8 +241,8 @@ function homePage() {
     <section class="py-20 sm:py-28 border-t border-white/5">
       <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center relative overflow-hidden">
         <div class="glow-red" style="width:500px;height:300px;top:-60px;left:50%;transform:translateX(-50%);opacity:.5"></div>
-        <h2 class="h-sec text-3xl sm:text-4xl mb-4 relative">Need a security partner that can grow with your mission?</h2>
-        <p class="text-white/55 max-w-2xl mx-auto mb-8 leading-relaxed relative">From offensive red teaming and penetration testing to research, tooling, awareness, and future incident-focused services, we’re building BLACK VECTR to support deeper security outcomes over time.</p>
+        <h2 class="h-sec text-3xl sm:text-4xl mb-4 relative">Need a focused security assessment or research collaboration?</h2>
+        <p class="text-white/55 max-w-2xl mx-auto mb-8 leading-relaxed relative">Bring the problem: an application, an API, a cloud environment, a suspicious event, a training need, or a research idea. BLACK VECTR will help shape it into a practical next step.</p>
         <a href="/contact" class="btn-primary relative"><i class="fa-regular fa-paper-plane"></i> Plan Your Engagement</a>
       </div>
     </section>`;
@@ -250,7 +250,7 @@ function homePage() {
 
 function aboutPage() {
   return `
-    ${pageHeader('// About Us', 'Built by researchers.<br /><span class="text-red">Growing into a wider security practice.</span>', 'BLACK VECTR started in offensive security and is evolving into a broader security solutions company with research, tooling, awareness, and incident-oriented capabilities.')}
+    ${pageHeader('// About Us', 'Built around curiosity,<br /><span class="text-red">discipline, and practical security research.</span>', 'BLACK VECTR is an independent security research and assessment practice focused on learning deeply, testing responsibly, and sharing useful work through reports, papers, and open-source tooling.')}
 
     <section class="py-16 sm:py-24">
       <div class="max-w-6xl mx-auto px-5 sm:px-8">
@@ -258,18 +258,18 @@ function aboutPage() {
           <div>
             <h2 class="h-sec text-2xl sm:text-3xl mb-5">Our Mission</h2>
             <div class="w-10 h-0.5 bg-red mb-6"></div>
-            <p class="text-white/65 leading-relaxed mb-4">BLACK VECTR was founded by practitioners who wanted to build a company around real security work, not checkbox outputs. Our roots are in offensive testing, but our direction is larger: security solutions that help organizations prepare, detect, respond, recover, and improve.</p>
-            <p class="text-white/65 leading-relaxed mb-4">We approach each client problem as both an operational challenge and a research challenge. That means understanding the environment, developing tailored methods, and producing work that is useful long after the engagement ends.</p>
-            <p class="text-white/65 leading-relaxed">Our long-term vision includes deeper red teaming, forensics support, asset recovery assistance, internal tooling, awareness initiatives, and specialized security programs that expand with the needs of serious organizations.</p>
+            <p class="text-white/65 leading-relaxed mb-4">BLACK VECTR exists for serious, hands-on security work: finding weaknesses, understanding why they exist, and turning that research into practical guidance. The practice is intentionally research-led, with every assessment shaped by curiosity, evidence, and responsible methodology.</p>
+            <p class="text-white/65 leading-relaxed mb-4">The current focus is security assessment, awareness, OSINT, cloud and attack-surface review, code review, log analysis, and incident-support work. As capabilities mature, selected research will be shared through technical papers, writeups, and GitHub repositories.</p>
+            <p class="text-white/65 leading-relaxed">The promise is not noise, fear, or inflated claims. It is careful testing, clear communication, practical remediation direction, and a habit of learning in public where it helps the community.</p>
           </div>
           <div>
             <h2 class="h-sec text-2xl sm:text-3xl mb-5">Our Approach</h2>
             <div class="w-10 h-0.5 bg-red mb-6"></div>
             <div class="space-y-5">
               ${[['01','Mission-Led Engagements','We shape our work around the client’s real risks, business model, and operational pressure points.'],
-                 ['02','Offense With Purpose','We use offensive methods to expose gaps that matter, not to generate noise or vanity findings.'],
-                 ['03','Build While We Break','Where needed, we design tools, workflows, and supporting assets that make the results more usable for the client team.'],
-                 ['04','Capability Expansion','We are intentionally growing toward a broader service line that includes awareness, forensics, recovery support, and more.']].map(([n, t, d]) => `
+                 ['02','Offense With Purpose','Testing is used to answer real questions about exposure, exploitability, business logic, and operational risk.'],
+                 ['03','Research Mindset','New techniques, tooling experiments, and public security research inform the way each assessment is approached.'],
+                 ['04','Responsible Growth','Services are expanded carefully, with capability, documentation, and evidence prioritized over marketing noise.']].map(([n, t, d]) => `
                 <div class="flex gap-4">
                   <span class="text-red font-mono text-sm shrink-0 font-semibold">${n}</span>
                   <div><h3 class="font-display text-sm font-semibold mb-1">${t}</h3><p class="text-sm text-white/55 leading-relaxed">${d}</p></div>
@@ -284,13 +284,13 @@ function aboutPage() {
       <div class="max-w-6xl mx-auto px-5 sm:px-8">
         <div class="text-center mb-14">
           <span class="code-label">// Focus Areas</span>
-          <h2 class="h-sec text-2xl sm:text-3xl mt-3">What We’re Building Around</h2>
+          <h2 class="h-sec text-2xl sm:text-3xl mt-3">What BLACK VECTR Is Built Around</h2>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          ${[['fa-crosshairs','Red Teaming','Adversary emulation, attack path analysis, and control validation'],
-             ['fa-screwdriver-wrench','Security Solutions','Internal tools, workflow design, and practical operational support'],
-             ['fa-brain','Awareness & Readiness','Human-layer education, drills, and resilience-minded preparation'],
-             ['fa-magnifying-glass','Forensics & Recovery','Incident investigation support and asset-focused response direction']].map(([i, t, d]) => `
+          ${[['fa-bug','Assessment','Web, API, cloud, code, identity, DNS, and external exposure review'],
+             ['fa-flask','Research','Technical papers, proof-of-concepts, notes, and GitHub-based knowledge sharing'],
+             ['fa-brain','Awareness','Training, phishing simulation, executive briefings, and social engineering education'],
+             ['fa-magnifying-glass','Investigation','Log analysis, breach investigation support, forensics triage, and exposure monitoring']].map(([i, t, d]) => `
             <div class="card-hover p-6 text-center">
               <div class="text-2xl mb-3 text-red"><i class="fa-solid ${i}"></i></div>
               <h3 class="font-display text-sm font-semibold mb-1">${t}</h3>
@@ -303,7 +303,7 @@ function aboutPage() {
     <section class="py-20 sm:py-28 border-t border-white/5">
       <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center">
         <h2 class="h-sec text-2xl sm:text-3xl mb-4">Work with us</h2>
-        <p class="text-white/55 max-w-2xl mx-auto mb-8 leading-relaxed">If you need an offensive partner today and a broader security ally tomorrow, BLACK VECTR is being built for exactly that path.</p>
+        <p class="text-white/55 max-w-2xl mx-auto mb-8 leading-relaxed">If you need a focused assessment, a research collaborator, or help turning a security concern into a clear plan, BLACK VECTR is built for that kind of work.</p>
         <a href="/contact" class="btn-primary"><i class="fa-regular fa-envelope"></i> Get in Touch</a>
       </div>
     </section>`;
@@ -311,18 +311,24 @@ function aboutPage() {
 
 function servicesPage() {
   return `
-    ${pageHeader('// What We Do', 'Security services that start with offense<br /><span class="text-red">and expand into solutions.</span>', 'BLACK VECTR delivers research-led offensive work today while building toward a broader security practice that includes awareness, forensics, recovery support, and specialized security programs.')}
+    ${pageHeader('// Services', 'Security assessment,<br /><span class="text-red">research, awareness, and response support.</span>', 'A focused service catalog for organizations that need practical testing, exposure review, training, and investigation support without vague deliverables or scanner-only output.')}
 
     <section class="py-16 sm:py-24">
       <div class="max-w-6xl mx-auto px-5 sm:px-8">
         <div class="grid sm:grid-cols-2 gap-5">
           ${[
-            ['fa-crosshairs','Offensive Red Teaming','Our lead service. We simulate realistic adversaries across people, process, applications, infrastructure, and detection workflows to show how a motivated attacker would actually move.',['Adversary Emulation','Attack Paths','Control Validation','Purple Teaming']],
-            ['fa-shield','Penetration Testing','Manual-first testing for web, mobile, API, cloud, internal, and hybrid environments with a focus on exploitability, chained weaknesses, and business impact.',['Web','API','Cloud','Internal']],
-            ['fa-terminal','Research & Tool Development','We research attack surfaces, build proof-of-concepts, and create internal tools or custom security workflows that help teams move faster with less noise.',['PoC Development','Internal Tools','Automation','Reverse Engineering']],
-            ['fa-user-shield','Security Awareness','Awareness that is grounded in real attacker behavior, not generic slides. We help teams build sharper instincts, better reporting habits, and stronger everyday security judgment.',['Leadership Briefings','Team Sessions','Threat Education','Readiness']],
-            ['fa-magnifying-glass-location','Digital Forensics Support','As our practice expands, we are building incident-focused capabilities for evidence handling, investigative support, attack reconstruction, and post-incident clarity.',['Evidence Review','Timeline Analysis','Incident Support','Case Triage']],
-            ['fa-life-ring','Asset Recovery Support','For organizations facing fraud, compromise, or operational loss, we are expanding into structured support for asset tracing, coordination, and recovery-oriented workflows.',['Recovery Planning','Tracing Support','Partner Coordination','Escalation Support']]
+            ['fa-window-restore','Web Application Security Testing','Manual and tool-assisted testing for authentication, authorization, session handling, injection, business logic, sensitive data exposure, and common OWASP-class weaknesses.',['Web App Pentest','Auth Testing','Business Logic','OWASP']],
+            ['fa-network-wired','API Security Testing','Assessment of REST, GraphQL, and backend API behavior, including object-level authorization, token handling, rate limits, input validation, and data exposure paths.',['REST','GraphQL','BOLA / IDOR','Token Review']],
+            ['fa-cloud','Cloud Security Assessment','Review of cloud configuration, identity permissions, storage exposure, network controls, logging posture, and practical attack paths across cloud-hosted systems.',['IAM','Storage Exposure','Logging','Misconfiguration']],
+            ['fa-satellite-dish','External Attack Surface Assessment','Mapping and validation of internet-facing assets, DNS records, exposed services, stale infrastructure, weak TLS, and publicly reachable risks.',['DNS Review','Exposed Services','TLS','Shadow Assets']],
+            ['fa-list-check','Vulnerability Assessment','Prioritized vulnerability discovery and validation that separates real risk from noise and gives teams a clear remediation order.',['Validation','Prioritization','Remediation','Reporting']],
+            ['fa-code','Secure Code Review','Security-focused source review for access control flaws, insecure data handling, injection risk, secrets exposure, privilege boundaries, and risky implementation patterns.',['Source Review','Secrets','Data Flow','Fix Guidance']],
+            ['fa-magnifying-glass-chart','OSINT & Data Exposure Assessment','Open-source intelligence research, public footprint mapping, leaked data checks, dark web exposure monitoring, and sensitive information discovery.',['OSINT','Data Exposure','Dark Web','Public Footprint']],
+            ['fa-user-secret','Social Engineering & Phishing Simulation','Controlled phishing simulation, social engineering assessment, reporting behavior review, and practical recommendations for human-layer defense.',['Phishing','Pretexting','Reporting Habits','Human Risk']],
+            ['fa-chalkboard-user','Security Awareness Training','Practical training for staff and executives, covering phishing, password hygiene, MFA, social engineering, incident reporting, and business-relevant security decisions.',['Staff Training','Executive Briefings','MFA','Reporting']],
+            ['fa-file-shield','Digital Forensics & Incident Support','Support for log analysis, breach investigation, evidence review, incident timeline reconstruction, and response planning when something suspicious has happened.',['Log Analysis','Breach Review','Timeline','IR Support']],
+            ['fa-users-gear','Active Directory & Privilege Review','Assessment of identity paths, privilege escalation opportunities, weak delegation, excessive permissions, admin exposure, and MFA coverage.',['AD Security','Privilege Escalation','MFA Review','Identity Risk']],
+            ['fa-flask','Security Research & Tooling','Focused research, proof-of-concept development, documentation, and GitHub-based tooling or writeups for selected security topics.',['Research Notes','PoC','GitHub','Technical Writing']]
           ].map(([icon, title, desc, tags]) => `
             <div class="card-hover p-7 sm:p-8">
               <div class="w-11 h-11 rounded-lg border border-white/8 flex items-center justify-center text-red mb-5"><i class="fa-solid ${icon}"></i></div>
@@ -339,13 +345,13 @@ function servicesPage() {
         <div class="max-w-2xl mx-auto text-center mb-12">
           <span class="code-label">// Our Process</span>
           <h2 class="h-sec text-2xl sm:text-3xl mt-3 mb-4">How we engage</h2>
-          <p class="text-white/55 text-sm leading-relaxed">A practical model for turning offensive insights into stronger long-term capability.</p>
+          <p class="text-white/55 text-sm leading-relaxed">A practical model for turning technical work into findings your team can actually use.</p>
         </div>
         <div class="grid sm:grid-cols-4 gap-6">
-          ${[['1','Scope the Mission','Understand your environment, risk model, business priorities, and likely attacker motivations'],
-             ['2','Apply the Right Pressure','Run the right mix of red teaming, testing, research, or awareness activity for the objective'],
-             ['3','Translate Into Action','Turn findings into decision-ready outputs, remediation direction, and operational next steps'],
-             ['4','Expand Capability','Use each engagement to inform future tooling, readiness, forensics, or recovery support where needed']].map(([n, t, d]) => `
+          ${[['1','Define the Question','Clarify the asset, concern, business context, access level, and the decision the assessment should support'],
+             ['2','Test With Evidence','Combine manual review, targeted tooling, research, and validation so findings are reproducible and meaningful'],
+             ['3','Explain the Risk','Translate technical impact into clear severity, exploit path, affected data, and practical business relevance'],
+             ['4','Deliver Next Steps','Provide remediation guidance, retest options, training needs, or investigation direction where appropriate']].map(([n, t, d]) => `
             <div class="text-center">
               <div class="w-11 h-11 rounded-full border border-red/40 flex items-center justify-center mx-auto mb-4 text-red text-sm font-bold font-mono">${n}</div>
               <h3 class="font-display text-sm font-semibold mb-2">${t}</h3>
@@ -358,15 +364,15 @@ function servicesPage() {
     <section class="py-20 border-t border-white/5">
       <div class="max-w-6xl mx-auto px-5 sm:px-8">
         <div class="max-w-2xl mx-auto text-center mb-12">
-          <span class="code-label">// Capability Roadmap</span>
-          <h2 class="h-sec text-2xl sm:text-3xl mt-3 mb-4">Where the company is heading</h2>
-          <p class="text-white/55 text-sm leading-relaxed">We’re intentionally growing beyond a narrow testing model into a wider security partner for high-trust organizations.</p>
+          <span class="code-label">// Engagement Fit</span>
+          <h2 class="h-sec text-2xl sm:text-3xl mt-3 mb-4">How services are positioned</h2>
+          <p class="text-white/55 text-sm leading-relaxed">Some work is available as a focused assessment now; deeper research and incident work can be scoped carefully based on the evidence and complexity involved.</p>
         </div>
         <div class="grid sm:grid-cols-3 gap-5">
           ${[
-            ['Now','Offensive Core','Red teaming, penetration testing, exploit research, and technical tooling.'],
-            ['Next','Readiness Layer','Security awareness, response preparation, internal process hardening, and practical education.'],
-            ['Expanding','Incident & Recovery Support','Forensics-aligned services, asset recovery support, and specialist response capabilities over time.']
+            ['Assess','Security Testing','Web, API, cloud, attack surface, code, DNS, identity, and vulnerability-focused work.'],
+            ['Educate','Awareness & Simulation','Security awareness, executive briefings, phishing simulation, and social engineering readiness.'],
+            ['Investigate','Research & Response','OSINT, exposure monitoring, log analysis, breach review, forensics triage, and technical research.']
           ].map(([phase, title, desc]) => `
             <div class="card-hover p-6 sm:p-7 text-center">
               <div class="code-label mb-3">${phase}</div>
@@ -379,8 +385,8 @@ function servicesPage() {
 
     <section class="py-20 sm:py-28 border-t border-white/5">
       <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center">
-        <h2 class="h-sec text-2xl sm:text-3xl mb-4">Need something outside a standard pentest?</h2>
-        <p class="text-white/55 max-w-2xl mx-auto mb-8 leading-relaxed">Tell us whether you need red teaming, custom tooling, awareness support, incident-oriented help, or a roadmap toward broader security capability. We’ll shape the engagement around the outcome, not a template.</p>
+        <h2 class="h-sec text-2xl sm:text-3xl mb-4">Need help choosing the right assessment?</h2>
+        <p class="text-white/55 max-w-2xl mx-auto mb-8 leading-relaxed">Share the asset, concern, or incident context. BLACK VECTR will help narrow the scope into a practical assessment, training session, research task, or investigation plan.</p>
         <a href="/contact" class="btn-primary"><i class="fa-regular fa-paper-plane"></i> Discuss Your Requirements</a>
       </div>
     </section>`;
@@ -388,7 +394,7 @@ function servicesPage() {
 
 function projectsPage() {
   return `
-    ${pageHeader('// Projects', 'Tools we build<br /><span class="text-red">to break things.</span>', 'Open-source tools, internal platforms, and security engineering projects from the BLACK VECTR team.')}
+    ${pageHeader('// Projects', 'Tools, experiments,<br /><span class="text-red">and security engineering notes.</span>', 'Open-source experiments, technical notes, and security engineering projects from BLACK VECTR.')}
     <section class="py-12 sm:py-16">
       <div class="max-w-6xl mx-auto px-5 sm:px-8">
         <div id="projectGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -401,7 +407,7 @@ function projectsPage() {
 
 function blogPage() {
   return `
-    ${pageHeader('// Research', 'Insights from<br /><span class="text-red">the lab.</span>', 'Technical deep-dives, vulnerability research, and practical security guides from the BLACK VECTR team.')}
+    ${pageHeader('// Research', 'Insights from<br /><span class="text-red">the lab.</span>', 'Technical deep-dives, vulnerability research notes, and practical security guides from BLACK VECTR.')}
     <section class="py-12 sm:py-16">
       <div class="max-w-6xl mx-auto px-5 sm:px-8">
         <div id="blogGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -419,8 +425,8 @@ function contactPage() {
       <div class="glow-red" style="width:440px;height:440px;top:-180px;right:-90px"></div>
       <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
         <span class="eyebrow">// Contact</span>
-        <h1 class="page-title mt-5 mb-4 max-w-3xl">Let's talk about<br /><span class="text-red">the security outcome you need.</span></h1>
-        <p class="text-white/55 max-w-2xl leading-relaxed">Whether you're planning a red team, a penetration test, security awareness work, tooling support, or future forensic and recovery-oriented services, we’ll help shape the right next step.</p>
+        <h1 class="page-title mt-5 mb-4 max-w-3xl">Let's define<br /><span class="text-red">the right security next step.</span></h1>
+        <p class="text-white/55 max-w-2xl leading-relaxed">Whether you need a web or API assessment, cloud review, OSINT work, awareness training, phishing simulation, log analysis, or incident support, share the context and we’ll shape a practical scope.</p>
       </div>
     </section>
 
@@ -435,33 +441,45 @@ function contactPage() {
               </div>
               <div class="mb-4">
                 <label for="cinterest" class="form-label">Service Interest</label>
-                <select id="cinterest" class="inp">
+                <select id="cinterest" class="inp" required>
                   <option value="" selected disabled hidden>Select a service</option>
-                  <option>Offensive Red Teaming</option>
-                  <option>Penetration Testing</option>
-                  <option>Research &amp; Tool Development</option>
-                  <option>Security Awareness</option>
-                  <option>Digital Forensics Support</option>
-                  <option>Asset Recovery Support</option>
-                  <option>Custom Security Solutions</option>
+                  <option>Web Application Security Testing</option>
+                  <option>API Security Testing</option>
+                  <option>External Attack Surface Assessment</option>
+                  <option>Cloud Security Assessment</option>
+                  <option>Vulnerability Assessment</option>
+                  <option>Secure Code Review</option>
+                  <option>OSINT / Data Exposure Assessment</option>
+                  <option>Phishing Simulation</option>
+                  <option>Security Awareness Training</option>
+                  <option>Executive Security Awareness Training</option>
+                  <option>Social Engineering Assessment</option>
+                  <option>Digital Forensics / Incident Response Support</option>
+                  <option>Log Analysis / Breach Investigation</option>
+                  <option>Active Directory / Privilege Escalation Review</option>
+                  <option>MFA Security Review</option>
+                  <option>Dark Web Exposure Monitoring</option>
+                  <option>DNS Security Review</option>
+                  <option>Bug Bounty Program Setup</option>
+                  <option>Security Research / GitHub Collaboration</option>
                   <option>Other / Not Sure</option>
                 </select>
               </div>
               <div class="mb-5">
                 <label for="cmsg" class="form-label">Message</label>
-                <textarea id="cmsg" class="inp" rows="4" placeholder="Tell us about your project, infrastructure, or security needs..."></textarea>
+                <textarea id="cmsg" class="inp" rows="4" placeholder="Tell us about the asset, concern, timeline, or security question..." required></textarea>
               </div>
-              <button type="submit" class="btn-primary w-full justify-center"><i class="fa-regular fa-paper-plane"></i> Send Message</button>
+              <button type="submit" class="btn-primary w-full justify-center"><i class="fa-regular fa-paper-plane"></i> Open Email Draft</button>
               <div id="formSuccess" class="hidden mt-4 p-3 rounded bg-red/10 border border-red/25 text-center text-sm text-white/70">
-                <i class="fa-regular fa-circle-check mr-1.5 text-red"></i>Thank you. We'll respond within 24 hours.
+                <i class="fa-regular fa-circle-check mr-1.5 text-red"></i>Your email draft is ready. Review it, then press send from your mail app.
               </div>
-              <p class="text-xs text-white/20 text-center mt-4"><i class="fa-solid fa-lock mr-1"></i> All communications are confidential.</p>
+              <p class="text-xs text-white/20 text-center mt-4"><i class="fa-solid fa-envelope-open-text mr-1"></i> Opens Gmail when available, with a mail-app fallback.</p>
             </form>
           </div>
           <div class="sm:col-span-2 space-y-4">
-            ${[['fa-regular fa-envelope','Email','contact@blackvectr.com',null],
-               ['fa-solid fa-lock','Encrypted','encrypted@blackvectr.com','PGP: 0xDEADBEEF'],
-               ['fa-regular fa-clock','Response Time','< 24 hours',null]].map(([icon, t, v, sub]) => `
+            ${[['fa-regular fa-envelope','Email',SITE.email,null],
+               ['fa-solid fa-flask','Research','Papers, writeups, and GitHub tooling','Shared when ready'],
+               ['fa-regular fa-clock','Response','Scope-first discussion',null]].map(([icon, t, v, sub]) => `
               <div class="card-hover p-6">
                 <div class="text-red text-lg mb-3"><i class="${icon}"></i></div>
                 <h3 class="font-display text-sm font-semibold mb-1">${t}</h3>
@@ -1141,12 +1159,87 @@ function observeElements() {
 }
 
 // ─── Form Handler ────────────────────────────
+function getFieldValue(id) {
+  return document.getElementById(id)?.value.trim() || '';
+}
+
+function buildContactEmail() {
+  const name = getFieldValue('cname');
+  const email = getFieldValue('cemail');
+  const service = getFieldValue('cinterest') || 'Security Assessment';
+  const message = getFieldValue('cmsg');
+  const page = window.location.href;
+  const date = new Date().toLocaleString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  const subject = `[BLACK VECTR Inquiry] ${service} - ${name}`;
+  const body = [
+    'Hello BLACK VECTR,',
+    '',
+    'I would like to discuss a security engagement.',
+    '',
+    'Inquiry Details',
+    '----------------',
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Service Interest: ${service}`,
+    `Submitted From: ${page}`,
+    `Prepared At: ${date}`,
+    '',
+    'Message',
+    '-------',
+    message,
+    '',
+    'Preferred next step:',
+    'Please review this request and reply with scope questions, availability, and recommended next steps.',
+    '',
+    'Regards,',
+    name
+  ].join('\n');
+
+  return { subject, body };
+}
+
+function openEmailDraft() {
+  const { subject, body } = buildContactEmail();
+  const params = new URLSearchParams({
+    view: 'cm',
+    fs: '1',
+    to: SITE.email,
+    su: subject,
+    body
+  });
+  const gmailUrl = `https://mail.google.com/mail/?${params.toString()}`;
+  const mailtoUrl = `mailto:${encodeURIComponent(SITE.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const draftWindow = window.open(gmailUrl, '_blank');
+
+  if (!draftWindow) {
+    window.location.href = mailtoUrl;
+    return 'mail';
+  }
+
+  draftWindow.opener = null;
+  return 'gmail';
+}
+
 function setupForm() {
   document.addEventListener('submit', e => {
     if (e.target.id === 'contactForm') {
       e.preventDefault();
+      if (!e.target.reportValidity()) return;
       const success = document.getElementById('formSuccess');
-      if (success) { success.classList.remove('hidden'); e.target.reset(); }
+      const openedWith = openEmailDraft();
+      if (success) {
+        success.classList.remove('hidden');
+        success.innerHTML = openedWith === 'gmail'
+          ? '<i class="fa-regular fa-circle-check mr-1.5 text-red"></i>Gmail opened with your draft. Review it, then press send.'
+          : '<i class="fa-regular fa-circle-check mr-1.5 text-red"></i>Your mail app opened with the draft. Review it, then press send.';
+      }
     }
   });
 }
