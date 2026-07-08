@@ -1,4 +1,4 @@
-const CACHE = 'bvec-v3';
+const CACHE = 'bvec-v4';
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '') || '';
 const MD_CACHE = 'bvec-md-v1';
 

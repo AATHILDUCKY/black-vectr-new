@@ -19,6 +19,14 @@
 <meta name="twitter:image" content="https://blackvectr.com/assets/images/research-lab.jpg" />
 <meta property="og:image" content="https://blackvectr.com/assets/images/research-lab.jpg" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"BLACK VECTR","url":"https://blackvectr.com","description":"Research-led security assessment practice focused on web, API, cloud, OSINT, awareness, exposure review, incident support, and vulnerability research.","foundingDate":"2023","contactPoint":{"@type":"ContactPoint","email":"blackvectr@gmail.com","contactType":"inquiries"}}</script>
+<script>
+(function () {
+  var parts = location.pathname.split('/').filter(Boolean);
+  var isProjectPage = location.hostname.indexOf('github.io') > -1 && parts.length;
+  var basePath = isProjectPage ? '/' + parts[0] + '/' : '/';
+  document.write('<base href="' + basePath + '" data-pages-base>');
+})();
+</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230a0a0b'/><path d='M7 9 L14 23 L17 23 L10 9 Z' fill='%23fff'/><path d='M17 9 L25 9 L18.5 23 L15.5 23 Z' fill='%23e60013'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -1249,7 +1249,7 @@ function registerSW() {
   if ('serviceWorker' in navigator) {
     try {
       const swPath = withBase('/sw.js');
-      navigator.serviceWorker.register(swPath).catch(() => {});
+      navigator.serviceWorker.register(swPath, { scope: withBase('/') }).catch(() => {});
     } catch (e) {}
   }
 }
@@ -1270,6 +1270,7 @@ function startPreload() {
 
 // ─── Initialization ──────────────────────────
 function init() {
+  document.querySelector('base[data-pages-base]')?.remove();
   setupNavigation();
   setupForm();
   setupCodeCopy();
