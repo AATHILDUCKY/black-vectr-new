@@ -1,5 +1,5 @@
 ---
-title: "BlackVectr ReconCloud — Automated Recon & Attack-Surface Pipeline"
+title: "BlackVectr Recon Pipeline — Automated Recon & Attack-Surface Pipeline"
 date: 2026-07-12
 author: "BLACK VECTR Engineering"
 tags: recon, osint, attack-surface, appsec, pentest-automation, nuclei, secret-scanning
