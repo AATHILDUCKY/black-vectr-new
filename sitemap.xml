@@ -7,6 +7,7 @@
   <url><loc>https://blackvectr.com/blog</loc><priority>0.7</priority></url>
   <url><loc>https://blackvectr.com/contact</loc><priority>0.6</priority></url>
   <url><loc>https://blackvectr.com/blog/sample-blog</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/blog/the-secrets-hiding-in-git-history</loc><priority>0.6</priority></url>
   <url><loc>https://blackvectr.com/blog/api-attack-surfaces</loc><priority>0.6</priority></url>
   <url><loc>https://blackvectr.com/blog/firmware-reversing</loc><priority>0.6</priority></url>
   <url><loc>https://blackvectr.com/blog/exploit-chains</loc><priority>0.6</priority></url>
