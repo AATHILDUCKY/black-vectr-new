@@ -1,8 +1,9 @@
-const CACHE = 'bvec-cf4b24297796';
+const CACHE = 'bvec-8ad039fdcae7';
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '') || '';
-const MD_CACHE = 'bvec-md-cf4b24297796';
+const MD_CACHE = 'bvec-md-8ad039fdcae7';
 
-const STATIC_EXT = /\.(js|css|jpg|jpeg|png|gif|webp|svg|woff2?|ttf|eot)$/;
+const CODE_EXT = /\.(js|css)$/;
+const STATIC_EXT = /\.(jpg|jpeg|png|gif|webp|svg|woff2?|ttf|eot)$/;
 
 self.addEventListener('install', e => {
   self.skipWaiting();
@@ -21,6 +22,13 @@ self.addEventListener('fetch', e => {
   if (url.origin !== self.location.origin) return;
 
   const path = url.pathname;
+
+  // Content manifests and application code change on every publish. Prefer the
+  // network so an older service worker cannot hide newly generated cards.
+  if (CODE_EXT.test(path)) {
+    e.respondWith(networkFirst(e.request, CACHE));
+    return;
+  }
 
   if (STATIC_EXT.test(path)) {
     e.respondWith(cacheFirst(e.request, CACHE));

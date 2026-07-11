@@ -190,7 +190,16 @@ def generate_routes(content: dict[str, list[dict[str, Any]]], check: bool) -> bo
 def update_service_worker(content: dict[str, list[dict[str, Any]]], check: bool) -> bool:
     path = ROOT / "sw.js"
     source = path.read_text(encoding="utf-8")
-    fingerprint_source = (ROOT / "index.html").read_bytes() + (ROOT / "assets/js/app.js").read_bytes() + json.dumps(content, sort_keys=True).encode()
+    # Exclude the generated cache declarations from their own fingerprint while
+    # including the remaining worker logic, so caching-strategy changes force a
+    # clean client cache on the next deployment.
+    worker_logic = SW_CACHE_RE.sub("", source).encode()
+    fingerprint_source = (
+        (ROOT / "index.html").read_bytes()
+        + (ROOT / "assets/js/app.js").read_bytes()
+        + json.dumps(content, sort_keys=True).encode()
+        + worker_logic
+    )
     version = hashlib.sha256(fingerprint_source).hexdigest()[:12]
     replacements = {"CACHE": f"bvec-{version}", "MD_CACHE": f"bvec-md-{version}"}
 
