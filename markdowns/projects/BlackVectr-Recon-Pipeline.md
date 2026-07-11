@@ -9,7 +9,7 @@ stack: Python, Flask, SQLite, Go tooling, Nuclei
 excerpt: "A staged, scope-safe reconnaissance orchestrator that automates the repetitive early phases of a pentest — from passive OSINT to bounded vulnerability checks — and normalizes every tool's output into one queryable inventory behind an authenticated web console."
 ---
 
-# BlackVectr ReconCloud — Automated Recon & Attack-Surface Pipeline
+# BlackVectr Recon Pipeline — Automated Recon & Attack-Surface Pipeline
 
 ## What this tool is
 
