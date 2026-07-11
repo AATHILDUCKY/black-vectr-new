@@ -510,17 +510,23 @@ function notFoundPage() {
 // CONTENT INDEX (Blog + Projects)
 // =============================================
 
-const BLOG_SLUGS = [
+const generatedContentIndex = window.BLACKVECTR_CONTENT_INDEX || {};
+const generatedBlogPosts = Array.isArray(generatedContentIndex.blogs) ? generatedContentIndex.blogs : [];
+const generatedProjects = Array.isArray(generatedContentIndex.projects) ? generatedContentIndex.projects : [];
+
+const BLOG_SLUGS = generatedBlogPosts.length ? generatedBlogPosts.map(post => post.slug) : [
   'sample-blog', 'api-attack-surfaces', 'firmware-reversing',
-  'exploit-chains', 'cloud-attack-paths', 'red-team-methodology'
+  'exploit-chains', 'cloud-attack-paths', 'red-team-methodology',
+  'the-secrets-hiding-in-git-history'
 ];
 
-const PROJECT_SLUGS = [
+const PROJECT_SLUGS = generatedProjects.length ? generatedProjects.map(project => project.slug) : [
   'sample-project', 'redlens', 'firmforge', 'cloudbreak', 'fuzzcore',
   'sigmavault', 'bytesift', 'authstorm', 'threatgraph', 'packetproxy'
 ];
 
-let BLOG_POSTS = [
+let BLOG_POSTS = generatedBlogPosts.length ? generatedBlogPosts : [
+  { slug: 'the-secrets-hiding-in-git-history', title: 'The Secrets Hiding in Your Git History', date: '2026-07-11', tags: ['OSINT','Secret Scanning','Git'], excerpt: 'A deleted commit is not a deleted secret. Learn how attackers find leaked credentials in Git history and how to respond.' },
   { slug: 'sample-blog', title: 'The Art of Manual Penetration Testing', date: '2026-06-15', tags: ['Penetration Testing','Methodology'], excerpt: 'Why automated scanners miss critical vulnerabilities and how manual testing reveals what tools can\'t find.' },
   { slug: 'api-attack-surfaces', title: 'Modern API Attack Surfaces', date: '2026-05-28', tags: ['API Security','Cloud'], excerpt: 'Mapping the growing attack surface of REST, GraphQL, and gRPC APIs in modern cloud-native applications.' },
   { slug: 'firmware-reversing', title: 'Firmware Reversing for Pentesters', date: '2026-04-10', tags: ['IoT','Firmware','Reverse Engineering'], excerpt: 'A practical guide to extracting, analyzing, and exploiting vulnerabilities in embedded device firmware.' },
@@ -529,7 +535,7 @@ let BLOG_POSTS = [
   { slug: 'red-team-methodology', title: 'Red Team Engagement Methodology', date: '2026-01-22', tags: ['Red Team','Methodology'], excerpt: 'How we plan and execute red team operations, from initial recon to final report delivery.' }
 ];
 
-let PROJECTS = [
+let PROJECTS = generatedProjects.length ? generatedProjects : [
   { slug: 'sample-project', title: 'Vantage — Attack Surface Monitor', date: '2026-06-20', status: 'Open Source', tags: ['Recon','Python','Automation'], excerpt: 'Continuous external attack-surface discovery and change monitoring across an organization\'s entire internet-facing footprint.' },
   { slug: 'redlens', title: 'RedLens — Adversary Emulation', date: '2026-06-02', status: 'Internal', tags: ['Red Team','C2','Go'], excerpt: 'A modular adversary-emulation platform for running repeatable, MITRE ATT&CK-mapped red team campaigns.' },
   { slug: 'firmforge', title: 'FirmForge — Firmware Pipeline', date: '2026-05-14', status: 'Open Source', tags: ['IoT','Firmware','Python'], excerpt: 'An automated pipeline that unpacks, analyzes, and diffs firmware images to surface secrets and vulnerable binaries.' },

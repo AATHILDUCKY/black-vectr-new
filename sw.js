@@ -1,6 +1,6 @@
-const CACHE = 'bvec-v4';
+const CACHE = 'bvec-4b9500855841';
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '') || '';
-const MD_CACHE = 'bvec-md-v1';
+const MD_CACHE = 'bvec-md-4b9500855841';
 
 const STATIC_EXT = /\.(js|css|jpg|jpeg|png|gif|webp|svg|woff2?|ttf|eot)$/;
 
