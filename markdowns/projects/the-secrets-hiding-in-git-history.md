@@ -1,9 +1,12 @@
 ---
-title: "The Secrets Hiding in Your Git History"
+title: "ReconForge — Git History Secret Discovery"
 date: 2026-07-11
-author: "BlackVectr Research Team"
+author: "BLACK VECTR Engineering"
 tags: osint, secret-scanning, git, appsec, reconnaissance
-excerpt: "A deleted commit is not a deleted secret. How one GitHub username becomes a full map of a developer's leaked credentials — and how to find them before an attacker does."
+status: Research
+role: Security Research & Engineering
+stack: Python, Git, Secret Scanning
+excerpt: "A Git-history reconnaissance workflow for finding exposed credentials before an attacker does."
 ---
 
 ## One username is enough

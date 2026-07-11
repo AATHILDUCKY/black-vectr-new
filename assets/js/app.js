@@ -18,8 +18,6 @@ const APP_BASE = getAppBase();
 
 // ─── Caching ─────────────────────────────────
 const mdCache = new Map();
-const contentCache = {};
-let contentLoading = {};
 
 function getAppBase() {
   if (window.location.protocol === 'file:') return '';
@@ -511,143 +509,11 @@ function notFoundPage() {
 // =============================================
 
 const generatedContentIndex = window.BLACKVECTR_CONTENT_INDEX || {};
-const generatedBlogPosts = Array.isArray(generatedContentIndex.blogs) ? generatedContentIndex.blogs : [];
+const generatedResearch = Array.isArray(generatedContentIndex.research) ? generatedContentIndex.research : [];
 const generatedProjects = Array.isArray(generatedContentIndex.projects) ? generatedContentIndex.projects : [];
 
-const BLOG_SLUGS = generatedBlogPosts.length ? generatedBlogPosts.map(post => post.slug) : [
-  'sample-blog', 'api-attack-surfaces', 'firmware-reversing',
-  'exploit-chains', 'cloud-attack-paths', 'red-team-methodology',
-  'the-secrets-hiding-in-git-history'
-];
-
-const PROJECT_SLUGS = generatedProjects.length ? generatedProjects.map(project => project.slug) : [
-  'sample-project', 'redlens', 'firmforge', 'cloudbreak', 'fuzzcore',
-  'sigmavault', 'bytesift', 'authstorm', 'threatgraph', 'packetproxy'
-];
-
-let BLOG_POSTS = generatedBlogPosts.length ? generatedBlogPosts : [
-  { slug: 'the-secrets-hiding-in-git-history', title: 'The Secrets Hiding in Your Git History', date: '2026-07-11', tags: ['OSINT','Secret Scanning','Git'], excerpt: 'A deleted commit is not a deleted secret. Learn how attackers find leaked credentials in Git history and how to respond.' },
-  { slug: 'sample-blog', title: 'The Art of Manual Penetration Testing', date: '2026-06-15', tags: ['Penetration Testing','Methodology'], excerpt: 'Why automated scanners miss critical vulnerabilities and how manual testing reveals what tools can\'t find.' },
-  { slug: 'api-attack-surfaces', title: 'Modern API Attack Surfaces', date: '2026-05-28', tags: ['API Security','Cloud'], excerpt: 'Mapping the growing attack surface of REST, GraphQL, and gRPC APIs in modern cloud-native applications.' },
-  { slug: 'firmware-reversing', title: 'Firmware Reversing for Pentesters', date: '2026-04-10', tags: ['IoT','Firmware','Reverse Engineering'], excerpt: 'A practical guide to extracting, analyzing, and exploiting vulnerabilities in embedded device firmware.' },
-  { slug: 'exploit-chains', title: 'Building Custom Exploit Chains', date: '2026-03-05', tags: ['Exploit Dev','Red Team'], excerpt: 'Methodology for chaining multiple low-severity vulnerabilities into high-impact exploit chains.' },
-  { slug: 'cloud-attack-paths', title: 'Cloud Infrastructure Attack Paths', date: '2026-02-18', tags: ['Cloud','AWS','GCP'], excerpt: 'Common misconfigurations and attack paths in AWS, GCP, and Azure environments.' },
-  { slug: 'red-team-methodology', title: 'Red Team Engagement Methodology', date: '2026-01-22', tags: ['Red Team','Methodology'], excerpt: 'How we plan and execute red team operations, from initial recon to final report delivery.' }
-];
-
-let PROJECTS = generatedProjects.length ? generatedProjects : [
-  { slug: 'sample-project', title: 'Vantage — Attack Surface Monitor', date: '2026-06-20', status: 'Open Source', tags: ['Recon','Python','Automation'], excerpt: 'Continuous external attack-surface discovery and change monitoring across an organization\'s entire internet-facing footprint.' },
-  { slug: 'redlens', title: 'RedLens — Adversary Emulation', date: '2026-06-02', status: 'Internal', tags: ['Red Team','C2','Go'], excerpt: 'A modular adversary-emulation platform for running repeatable, MITRE ATT&CK-mapped red team campaigns.' },
-  { slug: 'firmforge', title: 'FirmForge — Firmware Pipeline', date: '2026-05-14', status: 'Open Source', tags: ['IoT','Firmware','Python'], excerpt: 'An automated pipeline that unpacks, analyzes, and diffs firmware images to surface secrets and vulnerable binaries.' },
-  { slug: 'cloudbreak', title: 'CloudBreak — Cloud Attack Paths', date: '2026-04-28', status: 'Active', tags: ['Cloud','AWS','Graph'], excerpt: 'Graph-based analysis of IAM and network relationships to reveal exploitable privilege-escalation paths in AWS.' },
-  { slug: 'fuzzcore', title: 'FuzzCore — Coverage Fuzzer', date: '2026-04-05', status: 'Research', tags: ['Fuzzing','C','Research'], excerpt: 'A coverage-guided fuzzing harness generator that turns library headers into runnable fuzz targets automatically.' },
-  { slug: 'sigmavault', title: 'SigmaVault — Detection Toolkit', date: '2026-03-18', status: 'Open Source', tags: ['Blue Team','Detection','SQL'], excerpt: 'A detection-engineering toolkit for authoring, testing, and version-controlling Sigma rules against real telemetry.' },
-  { slug: 'bytesift', title: 'ByteSift — Binary Diffing Suite', date: '2026-02-26', status: 'Internal', tags: ['Reverse Engineering','Rust'], excerpt: 'Fast function-level binary diffing to accelerate patch analysis and 1-day vulnerability discovery.' },
-  { slug: 'authstorm', title: 'AuthStorm — SSO Testing Toolkit', date: '2026-02-08', status: 'Open Source', tags: ['AppSec','OAuth','SAML'], excerpt: 'A toolkit for probing OAuth, OIDC, and SAML flows for the misconfigurations that lead to account takeover.' },
-  { slug: 'threatgraph', title: 'ThreatGraph — Recon Correlation', date: '2026-01-20', status: 'Active', tags: ['OSINT','Graph','Python'], excerpt: 'Correlates OSINT, DNS, and certificate data into a queryable graph for large-scale reconnaissance.' },
-  { slug: 'packetproxy', title: 'PacketProxy — Protocol Interception', date: '2026-01-06', status: 'Open Source', tags: ['Network','Go','Tooling'], excerpt: 'An extensible intercepting proxy for arbitrary binary protocols, with a plugin API for custom codecs.' }
-];
-
-// ─── Dynamic Content Loading from Markdown ────
-function parseTag(tag) {
-  return tag.trim().replace(/-/g, ' ');
-}
-
-function parseTagArray(tags) {
-  return (tags || '').split(',').map(parseTag).filter(Boolean);
-}
-
-function parseFrontMatterFm(md) {
-  const fm = {};
-  if (md.startsWith('---')) {
-    const end = md.indexOf('---', 3);
-    if (end > 0) {
-      md.substring(3, end).trim().split('\n').forEach(l => {
-        const i = l.indexOf(':');
-        if (i > 0) {
-          const k = l.substring(0, i).trim();
-          const v = l.substring(i + 1).trim().replace(/^["']|["']$/g, '');
-          fm[k] = v;
-        }
-      });
-    }
-  }
-  return fm;
-}
-
-function normalizeContentItem(slug, fm) {
-  return {
-    slug,
-    title: fm.title || slug,
-    date: fm.date || '',
-    tags: parseTagArray(fm.tags),
-    excerpt: fm.excerpt || '',
-    status: fm.status || '',
-    stack: fm.stack || '',
-    link: fm.link || '',
-    role: fm.role || ''
-  };
-}
-
-async function loadContentIndex(type) {
-  const key = type === '/projects' ? 'projects' : 'blogs';
-  if (contentCache[key]) return contentCache[key];
-  if (contentLoading[key]) return contentLoading[key];
-
-  const slugs = type === '/projects' ? PROJECT_SLUGS : BLOG_SLUGS;
-  const fetchAll = slugs.map(async slug => {
-    if (mdCache.has(slug)) {
-      const fm = parseFrontMatterFm(mdCache.get(slug));
-      return normalizeContentItem(slug, fm);
-    }
-    try {
-      const res = await fetch(withBase(`/${key}/${slug}.md`));
-      if (!res.ok) return null;
-      const md = await res.text();
-      mdCache.set(slug, md);
-      const fm = parseFrontMatterFm(md);
-      return normalizeContentItem(slug, fm);
-    } catch (e) {
-      return null;
-    }
-  });
-
-  const loading = (async () => {
-    const results = await Promise.allSettled(fetchAll);
-    const items = results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
-    items.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-    contentCache[key] = items;
-    return items;
-  })();
-
-  contentLoading[key] = loading;
-  const items = await loading;
-  delete contentLoading[key];
-  return items;
-}
-
-async function refreshContentCache() {
-  try {
-    const [blogItems, projectItems] = await Promise.all([
-      loadContentIndex('/blog'),
-      loadContentIndex('/projects')
-    ]);
-    if (blogItems && blogItems.length) BLOG_POSTS = blogItems;
-    if (projectItems && projectItems.length) PROJECTS = projectItems;
-    updateHomeCards();
-    hydrateListings();
-  } catch (e) {
-    // use hardcoded fallback
-  }
-}
-
-function updateHomeCards() {
-  const blogGrid = document.getElementById('homeBlogGrid');
-  const projectGrid = document.getElementById('homeProjectGrid');
-  if (blogGrid) blogGrid.innerHTML = renderBlogCards(BLOG_POSTS.slice(0, 3));
-  if (projectGrid) projectGrid.innerHTML = renderProjectCards(PROJECTS.slice(0, 3));
-  if (blogGrid || projectGrid) normalizeInternalLinks(document.getElementById('app'));
-}
+const BLOG_POSTS = generatedResearch;
+const PROJECTS = generatedProjects;
 
 // ─── Card renderers (image-less, modern) ─────
 function contentCard(base, p, primaryLabel) {
@@ -701,6 +567,13 @@ function renderListing(type) {
     : { items: BLOG_POSTS, gridId: 'blogGrid', pagerId: 'blogPager', cards: renderBlogCards };
   const grid = document.getElementById(cfg.gridId);
   if (!grid) return;
+  if (!cfg.items.length) {
+    const label = type === '/projects' ? 'projects' : 'research posts';
+    grid.innerHTML = `<div class="col-span-full py-12 text-center text-sm text-white/40">No ${label} published yet.</div>`;
+    const pager = document.getElementById(cfg.pagerId);
+    if (pager) pager.innerHTML = '';
+    return;
+  }
   const { slice, page, pages } = paginate(cfg.items, listingState[type]);
   listingState[type] = page;
   grid.innerHTML = cfg.cards(slice);
@@ -1054,19 +927,21 @@ function projectMetaPanel(fm) {
 
 async function renderMarkdownPost(slug, kind) {
   const isProject = kind === 'project';
-  const dir = isProject ? 'projects' : 'blogs';
+  const collection = isProject ? 'projects' : 'research';
+  const dir = `markdowns/${collection}`;
+  const cacheKey = `${collection}:${slug}`;
   const listHref = isProject ? '/projects' : '/blog';
   const listLabel = isProject ? 'Back to Projects' : 'Back to Research';
   const app = document.getElementById('app');
   app.innerHTML = `<div class="max-w-4xl mx-auto px-5 sm:px-8 py-32 text-center text-white/20"><i class="fa-solid fa-spinner fa-spin text-2xl"></i></div>`;
 
   try {
-    let md = mdCache.get(slug);
+    let md = mdCache.get(cacheKey);
     if (!md) {
       const res = await fetch(withBase(`/${dir}/${slug}.md`));
       if (!res.ok) throw new Error('not found');
       md = await res.text();
-      mdCache.set(slug, md);
+      mdCache.set(cacheKey, md);
     }
 
     const fm = parseFrontMatter(md);
@@ -1260,20 +1135,6 @@ function registerSW() {
   }
 }
 
-// ─── Preloading ──────────────────────────────
-function startPreload() {
-  setTimeout(() => {
-    try {
-      const links = document.createElement('link');
-      links.rel = 'prefetch';
-      links.as = 'fetch';
-      links.href = withBase('/blogs/sample-blog.md');
-      document.head.appendChild(links);
-    } catch (e) {}
-    refreshContentCache();
-  }, 500);
-}
-
 // ─── Initialization ──────────────────────────
 function init() {
   document.querySelector('base[data-pages-base]')?.remove();
@@ -1284,7 +1145,6 @@ function init() {
   routePage();
   normalizeInternalLinks();
   registerSW();
-  startPreload();
 
   try {
     configureMarked();
