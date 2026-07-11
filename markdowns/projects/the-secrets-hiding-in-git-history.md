@@ -1,5 +1,5 @@
 ---
-title: "blackvectr-recon-scan — Git History Secret Discovery"
+title: "BlackVectr-Recon-Scan — Git History Secret Discovery"
 date: 2026-07-11
 author: "BLACK VECTR Engineering"
 tags: osint, secret-scanning, git, appsec, reconnaissance
