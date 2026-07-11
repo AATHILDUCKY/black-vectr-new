@@ -20,7 +20,7 @@ the earlier snapshots that developers rarely review after a change has been merg
 That difference matters. A repository can look clean today while an API key, database
 password, access token, or private key remains available in an older commit.
 
-This is the problem ReconForge is designed to investigate. A user supplies a GitHub
+This is the problem blackvectr-recon-scan is designed to investigate. A user supplies a GitHub
 username, and the application discovers the account's public repositories and scans
 their history for sensitive material. The goal is straightforward: help defenders
 find accidental exposures using the same kind of automation that an attacker could
@@ -86,7 +86,7 @@ been compromised.
 ## How automated history scanning works
 
 A useful scanner must do more than search the latest branch for the word `password`.
-ReconForge's GitHub-user workflow follows a broader pipeline.
+blackvectr-recon-scan's GitHub-user workflow follows a broader pipeline.
 
 ### 1. Discover the public repositories
 
@@ -206,7 +206,7 @@ to search at scale. The same automation can serve two very different purposes: a
 attacker can use it to collect credentials, or a security team can use it to discover
 and revoke them first.
 
-ReconForge turns a GitHub username into a structured review of public repositories and
+blackvectr-recon-scan turns a GitHub username into a structured review of public repositories and
 their previous commits. Its value is not that developers never make mistakes. Its
 value is accepting that mistakes happen and making them visible while there is still
 time to respond.

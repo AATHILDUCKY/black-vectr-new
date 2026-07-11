@@ -13,6 +13,7 @@ import hashlib
 import json
 import re
 import shutil
+import subprocess
 import sys
 from datetime import date
 from pathlib import Path
@@ -36,6 +37,23 @@ ACRONYMS = {
     "iot": "IoT", "osint": "OSINT", "oauth": "OAuth", "qemu": "QEMU",
     "saml": "SAML", "sql": "SQL", "sso": "SSO", "tls": "TLS",
 }
+PUBLISH_PATHS = (
+    ".github/workflows/pages.yml",
+    "404.html",
+    "about",
+    "assets/js/app.js",
+    "assets/js/content-index.js",
+    "blog",
+    "contact",
+    "index.html",
+    "markdowns",
+    "projects",
+    "scripts/generate-pages-routes.mjs",
+    "services",
+    "sitemap.xml",
+    "sw.js",
+    "update.py",
+)
 
 
 class ContentError(ValueError):
@@ -213,9 +231,44 @@ def update_service_worker(content: dict[str, list[dict[str, Any]]], check: bool)
     return write_if_changed(path, updated, check)
 
 
+def run_git(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ("git", *args),
+        cwd=ROOT,
+        check=check,
+        text=True,
+        capture_output=True,
+    )
+
+
+def publish_changes() -> str:
+    try:
+        branch = run_git("branch", "--show-current").stdout.strip()
+        if not branch:
+            raise ContentError("cannot publish from a detached Git HEAD")
+
+        # Stage only content sources and files owned by the static-site build.
+        run_git("add", "-A", "--", *PUBLISH_PATHS)
+        staged = run_git("diff", "--cached", "--quiet", check=False).returncode != 0
+        if staged:
+            run_git("commit", "-m", "update generated site content")
+
+        push = run_git("push", "origin", branch, check=False)
+        if push.returncode != 0:
+            detail = (push.stderr or push.stdout).strip()
+            raise ContentError(f"git push failed: {detail}")
+        return f"published origin/{branch}" if staged else f"origin/{branch} is up to date"
+    except FileNotFoundError as error:
+        raise ContentError("Git is required to publish the generated site") from error
+    except subprocess.CalledProcessError as error:
+        detail = (error.stderr or error.stdout or str(error)).strip()
+        raise ContentError(f"Git command failed: {detail}") from error
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate GitHub Pages content assets from Markdown.")
     parser.add_argument("--check", action="store_true", help="Report stale generated files without writing them.")
+    parser.add_argument("--no-publish", action="store_true", help="Generate files without committing or pushing them.")
     args = parser.parse_args()
     try:
         content = collect_content()
@@ -237,6 +290,12 @@ def main() -> int:
         print("Generated files are up to date.")
     else:
         print("Updated: " + (", ".join(changed) if changed else "nothing (already up to date)"))
+        if not args.no_publish:
+            try:
+                print("Git: " + publish_changes())
+            except ContentError as error:
+                print(f"update.py: publish error: {error}", file=sys.stderr)
+                return 1
     return 0
 
 

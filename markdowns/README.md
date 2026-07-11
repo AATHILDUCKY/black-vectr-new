@@ -64,5 +64,10 @@ python3 update.py
 ```
 
 This validates front matter and updates the content index, static routes,
-sitemap, and service-worker version. Use `python3 update.py --check` in checks
-that should fail when generated files are stale.
+sitemap, and service-worker version. When run locally, it also stages the
+site-managed files, creates an `update generated site content` commit when needed,
+and pushes the current branch to `origin`.
+
+Use `python3 update.py --no-publish` to generate without committing or pushing.
+Use `python3 update.py --check` for a read-only check that fails when generated
+files are stale. GitHub Actions uses `--no-publish` to avoid deployment loops.

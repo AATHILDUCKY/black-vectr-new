@@ -1,5 +1,5 @@
 ---
-title: "ReconForge — Git History Secret Discovery"
+title: "blackvectr-recon-scan — Git History Secret Discovery"
 date: 2026-07-11
 author: "BLACK VECTR Engineering"
 tags: osint, secret-scanning, git, appsec, reconnaissance
@@ -20,7 +20,7 @@ ruleset built to recognize what a secret looks like.
 
 This is not a hypothetical. It is a workflow that takes a couple of minutes, and it
 is exactly the workflow an attacker runs against your team the moment they learn one
-developer's handle. We built ReconForge to run that same workflow first — so you find
+developer's handle. We built blackvectr-recon-scan to run that same workflow first — so you find
 your own leaks before someone else turns them into an incident.
 
 This post is about the single most common, most damaging, and most quietly persistent
@@ -82,7 +82,7 @@ repository looks clean, but the history is where the secrets actually are.
 
 ## How the automated scan works
 
-ReconForge's GitHub-user flow is deliberately shaped like an attacker's
+blackvectr-recon-scan's GitHub-user flow is deliberately shaped like an attacker's
 reconnaissance, because that is the threat you are trying to get ahead of. It runs in
 three stages.
 
@@ -109,7 +109,7 @@ SendGrid, OpenAI, Anthropic, npm, PyPI, JWTs, PEM private keys — alongside gen
 connection strings, emails, and PII.
 
 The hard part of secret scanning is not matching — it is **not drowning in false
-positives.** ReconForge keeps the noise down with:
+positives.** blackvectr-recon-scan keeps the noise down with:
 
 - **Shannon-entropy gating** on generic patterns, so `api_key = "your-key-here"` is
   ignored while a genuinely random 40-character string is flagged.
@@ -167,12 +167,12 @@ people and repositories — and to internalize the one rule that would prevent m
 these incidents entirely: **a secret that ever touched a commit is a secret you rotate,
 not a secret you delete.**
 
-ReconForge exists to make finding those secrets a routine, boring, five-minute part of
+blackvectr-recon-scan exists to make finding those secrets a routine, boring, five-minute part of
 your week — instead of a headline.
 
 ---
 
-*ReconForge is intended for authorized security testing, CTF, and research only. Scan
+*blackvectr-recon-scan is intended for authorized security testing, CTF, and research only. Scan
 usernames, repositories, and infrastructure that you own or have explicit written
 permission to assess. You are responsible for complying with all applicable laws and
 platform terms of service.*
