@@ -53,7 +53,9 @@ excerpt: "A short project summary used on listing cards."
 Describe the project here.
 ```
 
-The `link` field is optional. Filenames must use lowercase kebab-case.
+The `link` field is optional. Filenames must use kebab-case (for example,
+`my-project.md`). Capital letters are accepted and public URLs are normalized
+to lowercase.
 
 ## Publish locally
 

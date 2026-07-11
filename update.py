@@ -28,7 +28,7 @@ CONTENT_SOURCES = (
     ("projects", "markdowns/projects", "projects"),
 )
 FIXED_ROUTES = ("", "about", "services", "projects", "blog", "contact")
-SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+SOURCE_SLUG_RE = re.compile(r"^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$")
 FRONT_MATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*(?:\n|\Z)", re.DOTALL)
 SW_CACHE_RE = re.compile(r"const (CACHE|MD_CACHE) = 'bvec(?:-md)?-[^']+';")
 ACRONYMS = {
@@ -91,9 +91,12 @@ def display_tag(tag: str) -> str:
 
 
 def content_item(path: Path, section: str) -> dict[str, Any]:
-    slug = path.stem
-    if not SLUG_RE.fullmatch(slug):
-        raise ContentError(f"{path.relative_to(ROOT)}: filename must be a lowercase kebab-case slug")
+    source_stem = path.stem
+    if not SOURCE_SLUG_RE.fullmatch(source_stem):
+        raise ContentError(f"{path.relative_to(ROOT)}: filename must be a kebab-case slug")
+    # Keep public routes and links canonical while allowing existing content
+    # files to use capitalized words in their source filename.
+    slug = source_stem.lower()
     fm = parse_front_matter(path)
     required = ("title", "date", "excerpt")
     missing = [field for field in required if not fm.get(field)]
@@ -110,6 +113,7 @@ def content_item(path: Path, section: str) -> dict[str, Any]:
 
     item: dict[str, Any] = {
         "slug": slug,
+        "source": path.name,
         "title": fm["title"],
         "date": fm["date"],
         "tags": tags,

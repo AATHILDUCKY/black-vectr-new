@@ -938,7 +938,10 @@ async function renderMarkdownPost(slug, kind) {
   try {
     let md = mdCache.get(cacheKey);
     if (!md) {
-      const res = await fetch(withBase(`/${dir}/${slug}.md`));
+      const entries = isProject ? generatedProjects : generatedResearch;
+      const entry = entries.find(item => item.slug === slug);
+      const source = entry?.source || `${slug}.md`;
+      const res = await fetch(withBase(`/${dir}/${source}`));
       if (!res.ok) throw new Error('not found');
       md = await res.text();
       mdCache.set(cacheKey, md);
