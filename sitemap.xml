@@ -6,6 +6,7 @@
   <url><loc>https://blackvectr.com/projects</loc><priority>0.8</priority></url>
   <url><loc>https://blackvectr.com/blog</loc><priority>0.7</priority></url>
   <url><loc>https://blackvectr.com/contact</loc><priority>0.6</priority></url>
+  <url><loc>https://blackvectr.com/blog/the-secrets-hiding-in-git-history</loc><lastmod>2026-07-11</lastmod><priority>0.6</priority></url>
   <url><loc>https://blackvectr.com/blog/sample-blog</loc><lastmod>2026-06-15</lastmod><priority>0.6</priority></url>
   <url><loc>https://blackvectr.com/blog/api-attack-surfaces</loc><lastmod>2026-05-28</lastmod><priority>0.6</priority></url>
   <url><loc>https://blackvectr.com/blog/firmware-reversing</loc><lastmod>2026-04-10</lastmod><priority>0.6</priority></url>
