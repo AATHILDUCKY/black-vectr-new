@@ -60,8 +60,8 @@ class ContentError(ValueError):
     """Raised when a Markdown content file cannot be published safely."""
 
 
-def parse_front_matter(path: Path) -> dict[str, str]:
-    text = path.read_text(encoding="utf-8")
+def parse_front_matter(path: Path, text: str | None = None) -> dict[str, str]:
+    text = text if text is not None else path.read_text(encoding="utf-8")
     match = FRONT_MATTER_RE.match(text)
     if not match:
         raise ContentError(f"{path.relative_to(ROOT)}: missing YAML front matter")
@@ -97,7 +97,8 @@ def content_item(path: Path, section: str) -> dict[str, Any]:
     # Keep public routes and links canonical while allowing existing content
     # files to use capitalized words in their source filename.
     slug = source_stem.lower()
-    fm = parse_front_matter(path)
+    source_text = path.read_text(encoding="utf-8")
+    fm = parse_front_matter(path, source_text)
     required = ("title", "date", "excerpt")
     missing = [field for field in required if not fm.get(field)]
     if missing:
@@ -114,6 +115,9 @@ def content_item(path: Path, section: str) -> dict[str, Any]:
     item: dict[str, Any] = {
         "slug": slug,
         "source": path.name,
+        # Include the Markdown body in generated state so body-only edits
+        # invalidate browser and service-worker caches.
+        "content_hash": hashlib.sha256(source_text.encode("utf-8")).hexdigest()[:12],
         "title": fm["title"],
         "date": fm["date"],
         "tags": tags,

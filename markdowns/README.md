@@ -66,7 +66,8 @@ python3 update.py
 ```
 
 This validates front matter and updates the content index, static routes,
-sitemap, and service-worker version. When run locally, it also stages the
+sitemap, content hashes, and service-worker version. Content hashes ensure
+body-only Markdown edits invalidate generated browser caches. When run locally, it also stages the
 site-managed files, creates an `update generated site content` commit when needed,
 and pushes the current branch to `origin`.
 

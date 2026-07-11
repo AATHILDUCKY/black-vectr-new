@@ -929,7 +929,9 @@ async function renderMarkdownPost(slug, kind) {
   const isProject = kind === 'project';
   const collection = isProject ? 'projects' : 'research';
   const dir = `markdowns/${collection}`;
-  const cacheKey = `${collection}:${slug}`;
+  const entries = isProject ? generatedProjects : generatedResearch;
+  const entry = entries.find(item => item.slug === slug);
+  const cacheKey = `${collection}:${slug}:${entry?.content_hash || ''}`;
   const listHref = isProject ? '/projects' : '/blog';
   const listLabel = isProject ? 'Back to Projects' : 'Back to Research';
   const app = document.getElementById('app');
@@ -938,8 +940,6 @@ async function renderMarkdownPost(slug, kind) {
   try {
     let md = mdCache.get(cacheKey);
     if (!md) {
-      const entries = isProject ? generatedProjects : generatedResearch;
-      const entry = entries.find(item => item.slug === slug);
       const source = entry?.source || `${slug}.md`;
       const res = await fetch(withBase(`/${dir}/${source}`));
       if (!res.ok) throw new Error('not found');
