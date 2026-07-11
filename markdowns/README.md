@@ -55,7 +55,9 @@ Describe the project here.
 
 The `link` field is optional. Filenames must use kebab-case (for example,
 `my-project.md`). Capital letters are accepted and public URLs are normalized
-to lowercase.
+to lowercase. When a document contains a level-one (`#`) heading, that heading
+is the display title used by cards, detail pages, and SEO metadata. Otherwise,
+the front-matter `title` is used.
 
 ## Publish locally
 
@@ -67,7 +69,9 @@ python3 update.py
 
 This validates front matter and updates the content index, static routes,
 sitemap, content hashes, and service-worker version. Content hashes ensure
-body-only Markdown edits invalidate generated browser caches. When run locally, it also stages the
+body-only Markdown edits invalidate generated browser caches. The generated
+content index also receives a versioned URL so card-title changes bypass stale
+browser and CDN responses. When run locally, it also stages the
 site-managed files, creates an `update generated site content` commit when needed,
 and pushes the current branch to `origin`.
 

@@ -950,14 +950,15 @@ async function renderMarkdownPost(slug, kind) {
     const fm = parseFrontMatter(md);
     const body = stripFrontMatter(md);
     const html = renderMarkdownHtml(body);
+    const displayTitle = entry?.title || fm.title || (isProject ? 'Project' : 'Blog Post');
 
     const words = body.replace(/```[\s\S]*?```/g, '').trim().split(/\s+/).filter(Boolean).length;
     const readMins = Math.max(1, Math.round(words / 200));
 
-    document.title = (fm.title || (isProject ? 'Project' : 'Blog Post')) + ' — BLACK VECTR';
+    document.title = displayTitle + ' — BLACK VECTR';
     const desc = fm.excerpt || 'BLACK VECTR — research-driven offensive security.';
     document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
-    document.querySelector('meta[property="og:title"]')?.setAttribute('content', fm.title || 'BLACK VECTR');
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', displayTitle);
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
     const postUrl = SITE.url + listHref + '/' + slug;
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', postUrl);
@@ -987,7 +988,7 @@ async function renderMarkdownPost(slug, kind) {
                 ${dateStr ? `<span>${dateStr}</span>` : ''}
                 <span class="text-white/15">/</span><span class="reading-meta"><i class="fa-regular fa-clock text-[10px]"></i> ${readMins} min read</span>
               </div>
-              <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight leading-[1.15]">${fm.title || ''}</h1>
+              <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight leading-[1.15]">${displayTitle}</h1>
               ${fm.excerpt ? `<p class="text-white/55 mt-4 text-base leading-relaxed">${fm.excerpt}</p>` : ''}
               ${tags.length ? `<div class="flex flex-wrap gap-1.5 mt-4">${tags.map(t => `<span class="tag">${t.replace(/-/g,' ')}</span>`).join('')}</div>` : ''}
               <div class="w-12 h-0.5 bg-red mt-6"></div>
